@@ -1,9 +1,18 @@
 using System;
 
-class Program
+namespace game
 {
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("Hello World! This is the Exercise1 Project.");
+        static void Main(string[] args)
+    {
+        Console.Write("What is your first name? ");
+        string first = Console.ReadLine();
+
+        Console.Write("What is your last name? ");
+        string last = Console.ReadLine();
+
+        Console.WriteLine($"Your name is {last}, {first} {last}.");
+        }
     }
 }
