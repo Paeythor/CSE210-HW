@@ -1,66 +1,94 @@
 using System;
+using System.IO;
 
-public class Program
+class Program
 {
-    public static void Main()
+    static void Main()
     {
         Journal journal = new Journal();
-        bool running = true;
+        PromptGenerator promptGenerator = new PromptGenerator();
+        
+        bool exitProgram = false;
 
-        while (running)
+        while (!exitProgram)
         {
             Console.Clear();
-            Console.WriteLine("Welcome to your Journal Program!");
-            Console.WriteLine("1. Write a new entry");
-            Console.WriteLine("2. Display all journal entries");
-            Console.WriteLine("3. Save journal to a file");
-            Console.WriteLine("4. Load journal from a file");
+            Console.WriteLine("Journal Program");
+            Console.WriteLine("1. Write a New Entry");
+            Console.WriteLine("2. Display Journal");
+            Console.WriteLine("3. Save Journal to File");
+            Console.WriteLine("4. Load Journal from File");
             Console.WriteLine("5. Exit");
+            Console.Write("Select an option: ");
+            
+            string option = Console.ReadLine();
 
-            string choice = Console.ReadLine();
-
-            switch (choice)
+            switch (option)
             {
                 case "1":
-                    Console.WriteLine("Please write your response:");
-                    string response = Console.ReadLine();
-                    journal.AddEntry(response);
-                    Console.WriteLine("Entry added.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                    WriteNewEntry(journal, promptGenerator);
                     break;
-
                 case "2":
-                    journal.DisplayEntries();
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                    DisplayJournal(journal);
                     break;
-
                 case "3":
-                    Console.WriteLine("Enter filename to save journal:");
-                    string saveFile = Console.ReadLine();
-                    journal.SaveToFile(saveFile);
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                    SaveJournal(journal);
                     break;
-
                 case "4":
-                    Console.WriteLine("Enter filename to load journal:");
-                    string loadFile = Console.ReadLine();
-                    journal.LoadFromFile(loadFile);
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                    LoadJournal(journal);
                     break;
-
                 case "5":
-                    running = false;
-                    Console.WriteLine("Goodbye!");
+                    exitProgram = true;
                     break;
-
                 default:
-                    Console.WriteLine("Invalid option, please try again.");
+                    Console.WriteLine("Invalid option. Try again.");
                     break;
             }
         }
+    }
+
+    // Write a new journal entry
+    static void WriteNewEntry(Journal journal, PromptGenerator promptGenerator)
+    {
+        string prompt = promptGenerator.GetRandomPrompt();
+        Console.WriteLine("\nPrompt: " + prompt);
+        Console.Write("Your response: ");
+        string response = Console.ReadLine();
+        
+        Entry newEntry = new Entry(prompt, response);
+        journal.AddEntry(newEntry);
+        
+        Console.WriteLine("Entry added successfully!");
+        Console.ReadLine();  // Pause for user to read the message
+    }
+
+    // Display all journal entries
+    static void DisplayJournal(Journal journal)
+    {
+        Console.WriteLine("\nYour Journal Entries:\n");
+        journal.DisplayAll();
+        Console.ReadLine();  // Pause for user to read the entries
+    }
+
+    // Save the journal entries to a file
+    static void SaveJournal(Journal journal)
+    {
+        Console.Write("\nEnter filename to save journal: ");
+        string filename = Console.ReadLine();
+        
+        journal.SaveToFile(filename);
+        Console.WriteLine("Journal saved successfully!");
+        Console.ReadLine();  // Pause for user to read the message
+    }
+
+    // Load the journal entries from a file
+    static void LoadJournal(Journal journal)
+    {
+        Console.Write("\nEnter filename to load journal: ");
+        string filename = Console.ReadLine();
+        
+        journal.LoadFromFile(filename);
+        Console.WriteLine("Journal loaded successfully!");
+        Console.ReadLine();  // Pause for user to read the message
     }
 }

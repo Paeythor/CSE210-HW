@@ -1,76 +1,54 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
-public class Journal
+class Journal
 {
-    public List<JournalEntry> Entries { get; set; } = new List<JournalEntry>();
-    private static readonly string[] Prompts = new string[]
-    {
-        "Who was the most interesting person I interacted with today?",
-        "What was the best part of my day?",
-        "How did I see the hand of the Lord in my life today?",
-        "What was the strongest emotion I felt today?",
-        "If I had one thing I could do over today, what would it be?"
-    };
+    private List<Entry> _entries;
 
-    public void AddEntry(string response)
+    public Journal()
     {
-        Random random = new Random();
-        string prompt = Prompts[random.Next(Prompts.Length)];
-        var entry = new JournalEntry(prompt, response);
-        Entries.Add(entry);
+        _entries = new List<Entry>();
     }
 
-    public void DisplayEntries()
+    public void AddEntry(Entry newEntry)
     {
-        if (Entries.Count == 0)
+        _entries.Add(newEntry);
+    }
+
+    public void DisplayAll()
+    {
+        foreach (var entry in _entries)
         {
-            Console.WriteLine("No entries found.");
-        }
-        else
-        {
-            foreach (var entry in Entries)
-            {
-                Console.WriteLine(entry.ToString());
-            }
+            entry.Display();
+            Console.WriteLine();
         }
     }
 
     public void SaveToFile(string filename)
     {
-        using (System.IO.StreamWriter file = new System.IO.StreamWriter(filename))
+        using (StreamWriter file = new StreamWriter(filename))
         {
-            foreach (var entry in Entries)
+            foreach (var entry in _entries)
             {
-                file.WriteLine(entry.ToFileFormat());
+                file.WriteLine(entry.ToString());
             }
         }
-        Console.WriteLine("Journal saved successfully.");
     }
 
     public void LoadFromFile(string filename)
     {
-        if (System.IO.File.Exists(filename))
+        _entries.Clear();
+        foreach (var line in File.ReadLines(filename))
         {
-            string[] lines = System.IO.File.ReadAllLines(filename);
-            Entries.Clear();
-            foreach (var line in lines)
+            var parts = line.Split('|');
+            if (parts.Length == 3)
             {
-                string[] parts = line.Split('|');
-                if (parts.Length == 3)
-                {
-                    var entry = new JournalEntry(parts[1], parts[2])
-                    {
-                        Date = parts[0]
-                    };
-                    Entries.Add(entry);
-                }
+                string prompt = parts[0];
+                string response = parts[1];
+                Entry entry = new Entry(prompt, response);
+                _entries.Add(entry);
             }
-            Console.WriteLine("Journal loaded successfully.");
-        }
-        else
-        {
-            Console.WriteLine("File not found.");
         }
     }
 }
