@@ -5,7 +5,7 @@ class Product
     private double price;
     private int quantity;
 
-    // Constructor
+    // Constructor double price implemented to exceed expectations and provide the opportunity for decimals which is more realistic in real world
     public Product(string name, int productId, double price, int quantity)
     {
         this.name = name;
