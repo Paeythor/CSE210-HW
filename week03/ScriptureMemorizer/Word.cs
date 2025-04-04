@@ -1,31 +1,24 @@
+// Word.cs
 using System;
-using System.Collections.Generic;
 
-public class Word
+class Word
 {
-    private Dictionary<string, string> wordDictionary;
+    private string _text;
+    public bool IsHidden { get; private set; }
 
-    public Word()
+    public Word(string text)
     {
-        wordDictionary = new Dictionary<string, string>
-        {
-            { "Purpose", "Moses 1:39" },
-            { "Light", "Matthew 5:14–16" },
-            { "Obedience", "1 Nephi 3:7" }
-        };
+        _text = text;
+        IsHidden = false;
     }
 
-    public bool TryGetReference(string word, out string reference)
+    public void Hide()
     {
-        return wordDictionary.TryGetValue(word, out reference);
+        IsHidden = true;
     }
 
-    public void DisplayWords()
+    public string GetDisplayText()
     {
-        Console.WriteLine("Available keywords:");
-        foreach (var word in wordDictionary.Keys)
-        {
-            Console.WriteLine("- " + word);
-        }
+        return IsHidden ? new string('_', _text.Length) : _text;
     }
 }
