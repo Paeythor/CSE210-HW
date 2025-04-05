@@ -20,7 +20,7 @@ class Program
             }
             Console.WriteLine("What portion of the text percentage-wise (1-100) would you like to start with?");
             int startDifficulty = int.Parse(Console.ReadLine());
-            Console.WriteLine("Thank you so much for your entry. Seeking your scripture diligently.");
+            Console.WriteLine("Thank you so much for your entry. Seeking your scripture diligently....");
 
             var scriptureList = library.DefineLibrary(input);
             if (scriptureList.Count == 0)
