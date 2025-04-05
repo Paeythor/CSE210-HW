@@ -11,7 +11,7 @@ class Program
         while (true)
         {
             StandardWorks library = new StandardWorks();
-            Console.WriteLine("What are the Verses, Chapters and/or Books, Chapters, or Verses do you seek to master? (I.e. Ether 12:27)");
+            Console.WriteLine("What are the Verses, Chapters and/or Books do you seek to master? (I.e. Ether 12:27)");
             string input = Console.ReadLine();
             if (input.Trim().ToLower() == "quit")
             {
