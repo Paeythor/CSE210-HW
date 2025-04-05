@@ -1,41 +1,95 @@
-// Scripture.cs
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-class Scripture
+public class Scripture
 {
-    private Reference _reference;
-    private List<Word> _words;
+    private string _book;
+    private int _chapter;
+    private int _verse;
+    private string _text;
 
-    public Scripture(Reference reference, string text)
+    // Getters and Setters for Book, Chapter, Verse, and Text
+    public string GetBook()
     {
-        _reference = reference;
-        _words = text.Split(' ').Select(word => new Word(word)).ToList();
+        return _book;
     }
 
-    public string GetDisplayText()
+    public void SetBook(string book)
     {
-        string referenceText = _reference.ToString();
-        string scriptureText = string.Join(" ", _words.Select(word => word.GetDisplayText()));
-        return $"{referenceText} - {scriptureText}";
+        _book = book;
     }
 
-    public void HideRandomWords()
+    public int GetChapter()
     {
-        Random random = new Random();
-        var visibleWords = _words.Where(word => !word.IsHidden).ToList();
-        if (visibleWords.Count == 0) return;
+        return _chapter;
+    }
 
-        int wordsToHide = Math.Max(1, visibleWords.Count / 4); // Hide 25% of remaining words
-        for (int i = 0; i < wordsToHide; i++)
+    public void SetChapter(int chapter)
+    {
+        _chapter = chapter;
+    }
+
+    public int GetVerse()
+    {
+        return _verse;
+    }
+
+    public void SetVerse(int verse)
+    {
+        _verse = verse;
+    }
+
+    public string GetText()
+    {
+        return _text;
+    }
+
+    public void SetText(string text)
+    {
+        _text = text;
+    }
+
+    // Convert the scripture's text into a list of 'Word' objects
+    public List<Word> GetWords()
+    {
+        return _text.Split(' ').Select(word => new Word(word)).ToList();
+    }
+
+    // Method to split a scripture reference like "Book 1:1" into its components
+    public static (string bookName, int chapter, int verse) SplitReference(string reference)
+    {
+        // Regex to match standard reference format like "Book 1:1"
+        var referencePattern = new Regex(@"^(?<bookName>[\w\s]+)\s(?<chapter>\d+):(?<verse>\d+)$");
+        var match = referencePattern.Match(reference);
+
+        if (match.Success)
         {
-            visibleWords[random.Next(visibleWords.Count)].Hide();
+            string bookName = match.Groups["bookName"].Value;
+            int chapter = int.Parse(match.Groups["chapter"].Value);
+            int verse = int.Parse(match.Groups["verse"].Value);
+
+            return (bookName, chapter, verse);
         }
+
+        // If reference format is invalid, return default values
+        return (string.Empty, 0, 0);
     }
 
-    public bool AllWordsHidden()
+    // Method to read a scripture reference and its text
+    public void ReadScripture(string reference, string text)
     {
-        return _words.All(word => word.IsHidden);
+        var parts = SplitReference(reference);
+        _book = parts.bookName;
+        _chapter = parts.chapter;
+        _verse = parts.verse;
+        _text = text;
+    }
+
+    // Override ToString for easy output of the scripture in a readable format
+    public override string ToString()
+    {
+        return $"{_book} {_chapter}:{_verse} - {_text}";
     }
 }

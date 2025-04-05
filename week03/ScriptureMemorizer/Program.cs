@@ -1,113 +1,56 @@
-// Program.cs
-using System.IO;
+using System;
 using System.Collections.Generic;
-using System.IO;
+
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        List<Scripture> scriptures = LoadScripturesFromFile("/Users/krypton/Desktop/CSE210-HW/week03/ScriptureMemorizer/Scriptures.txt");
+        int _count = 0;
 
-        if (scriptures.Count == 0)
+        while (true)
         {
-            Console.WriteLine("No scriptures found in the file.");
-            return;
-        }
-
-        bool keepRunning = true;
-        Random random = new Random();
-
-        while (keepRunning)
-        {
-            Scripture scripture = scriptures[random.Next(scriptures.Count)];
-
-            while (!scripture.AllWordsHidden())
+            StandardWorks library = new StandardWorks();
+            Console.WriteLine("What are the Verses, Chapters and/or Books, Chapters, or Verses do you seek to master? (I.e. Ether 12:27)");
+            string input = Console.ReadLine();
+            if (input.Trim().ToLower() == "quit")
             {
-                Console.Clear();
-                Console.WriteLine(scripture.GetDisplayText());
-                Console.WriteLine("\nPress Enter to hide words, type 'next' for another scripture, or 'quit' to exit.");
-
-                string input = Console.ReadLine().ToLower();
-                if (input == "quit")
-                {
-                    keepRunning = false;
-                    break;
-                }
-                else if (input == "next")
-                {
-                    break; // Break out of inner loop to get a new scripture
-                }
-
-                scripture.HideRandomWords();
+                Console.WriteLine("Now leaving the program...");
+                break;
             }
+            Console.WriteLine("What portion of the text percentage-wise to start 1-100 would you like to start with?");
+            int startDifficulty = int.Parse(Console.ReadLine());
+            Console.WriteLine("Thank you so much for your entry. Seeking your scripture diligently.");
 
-            if (scripture.AllWordsHidden())
+            var scriptureList = library.DefineLibrary(input);
+            if (scriptureList.Count == 0)
             {
-                Console.Clear();
-                Console.WriteLine(scripture.GetDisplayText());
-                Console.WriteLine("\nAll words are now hidden! Well done memorizing.");
-                Console.WriteLine("Press Enter for a new scripture or type 'quit' to exit.");
+                Console.WriteLine("No matches found in the scriptures for that. Please try again.");
+                continue;
+            }
+            while (_count < scriptureList.Count)
+            {
+                Console.WriteLine("Scripture: " + scriptureList[_count].GetText());
+                var scripture = scriptureList[_count];
+                var game = new ScriptureMasteryGame(scripture, startDifficulty);
+                bool next = game.Start();
 
-                string input = Console.ReadLine().ToLower();
-                if (input == "quit")
+                if (next)
                 {
-                    keepRunning = false;
+                    _count++;
+                }
+                else
+                {
+                    break; 
                 }
             }
-        }
-    }
-
-    static List<Scripture> LoadScripturesFromFile(string filePath)
-    {
-        List<Scripture> scriptures = new List<Scripture>();
-        string line;
-
-        try
-        {
-            // Pass the file path and file name to the StreamReader constructor
-            StreamReader sr = new StreamReader(filePath);
-
-            // Read the first line of text
-            line = sr.ReadLine();
-
-            // Continue to read until you reach the end of the file
-            while (line != null)
+            Console.WriteLine("Do you want to try more scriptures? (y/n)");
+            string retryInput = Console.ReadLine();
+            if (retryInput.ToLower() != "y")
             {
-                // Skip empty lines
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    line = sr.ReadLine();
-                    continue;
-                }
-
-                string[] parts = line.Split('|');
-                if (parts.Length == 3)
-                {
-                    string referenceText = parts[0].Trim();
-                    string topic = parts[1].Trim(); // currently unused but could be added to Scripture class
-                    string text = parts[2].Trim();
-
-                    Reference reference = Reference.Parse(referenceText);
-                    scriptures.Add(new Scripture(reference, text));
-                }
-
-                // Read the next line
-                line = sr.ReadLine();
+                break;
             }
-
-            // Close the file
-            sr.Close();
+            _count = 0;
         }
-        catch (Exception e)
-        {
-            Console.WriteLine("Exception: " + e.Message);
-        }
-        finally
-        {
-            Console.WriteLine("Executing finally block.");
-        }
-
-        return scriptures;
     }
 }
