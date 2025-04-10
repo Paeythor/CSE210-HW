@@ -114,7 +114,6 @@ class Program
         manager.AddGoal(goal);
         Console.WriteLine("Checklist Goal added successfully.");
     }
-
     static void RecordEvent(GoalManager manager)
     {
         Console.Write("Enter the index of the goal to record an event: ");
