@@ -23,17 +23,17 @@ public class GoalManager
         var goal = _goals[index];
         goal.RecordEvent();
 
-        // Adjusted logic to properly add points
+        
         if (goal.IsComplete())
         {
-            // For ChecklistGoal, add the bonus points
+            
             if (goal is ChecklistGoal checklistGoal)
             {
-                _score += checklistGoal.GetBonus();  // Use GetBonus() for ChecklistGoal
+                _score += checklistGoal.GetBonus();  
             }
             else
             {
-                _score += goal.GetPoints();  // For other goal types, use GetPoints() to add points
+                _score += goal.GetPoints();  
             }
         }
     }
