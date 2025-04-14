@@ -22,12 +22,12 @@ public class ReflectionActivity : Activity
         Random rand = new Random();
         string prompt = prompts[rand.Next(prompts.Count)];
         Console.WriteLine(prompt);
-        PauseWithAnimation(3); // Pause for a few seconds before prompting questions
+        PauseWithAnimation(3); 
 
         foreach (string question in reflectionQuestions)
         {
             Console.WriteLine(question);
-            PauseWithAnimation(5); // Wait 5 seconds after each question for reflection
+            PauseWithAnimation(5); 
         }
 
         EndMessage("Reflection");

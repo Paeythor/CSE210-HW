@@ -8,10 +8,10 @@ public class BreathingActivity : Activity
         while (timeElapsed < Duration)
         {
             Console.WriteLine("Breathe in...");
-            PauseWithAnimation(4); // Adjust timing as needed
+            PauseWithAnimation(4); 
             Console.WriteLine("Breathe out...");
-            PauseWithAnimation(4); // Adjust timing as needed
-            timeElapsed += 8; // 4 seconds per breath in + 4 seconds per breath out
+            PauseWithAnimation(4); 
+            timeElapsed += 8; 
         }
 
         EndMessage("Breathing");

@@ -5,20 +5,20 @@ public abstract class Activity
 {
     public int Duration { get; set; }
 
-    // Base method to start any activity, will be overridden by derived classes.
+    
     public abstract void StartActivity();
 
-    // Common start message to all activities
+    
     protected void StartMessage(string activityName, string description)
     {
         Console.WriteLine($"{activityName}: {description}");
         Console.WriteLine("Please enter the duration for the activity in seconds:");
         Duration = int.Parse(Console.ReadLine());
         Console.WriteLine("Get ready...");
-        PauseWithAnimation(3); // Pause for 3 seconds before starting the activity
+        PauseWithAnimation(3); 
     }
 
-    // Common end message for all activities
+    
     protected void EndMessage(string activityName)
     {
         Console.WriteLine($"Great job! You've completed the {activityName} activity.");
@@ -37,11 +37,11 @@ public abstract class Activity
         {
             Console.WriteLine(spinner[spinnerIndex]);
             Console.WriteLine("  Time left: " + (int)(endTime - DateTime.Now).TotalSeconds + "s");
-            Thread.Sleep(500); // Pause for 0.5 second
-            Console.WriteLine("\b \b"); // Erase the previous character
-            spinnerIndex = (spinnerIndex + 1) % spinner.Length; // Cycle through the spinner
+            Thread.Sleep(500); 
+            Console.WriteLine("\b \b"); 
+            spinnerIndex = (spinnerIndex + 1) % spinner.Length; 
         }
-        // Final countdown display (when time is up)
+        
         Console.WriteLine("Time's up!");
     }
     

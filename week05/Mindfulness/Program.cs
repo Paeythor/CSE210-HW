@@ -10,7 +10,7 @@ public class Program
         Console.WriteLine("1. Breathing Activity");
         Console.WriteLine("2. Reflection Activity");
         Console.WriteLine("3. Listing Activity");
-        Console.WriteLine("4. Stretching Activity"); // Added Stretching Activity
+        Console.WriteLine("4. Stretching Activity"); 
         Console.WriteLine("5. Exit");
 
         string choice = Console.ReadLine();
@@ -29,10 +29,10 @@ public class Program
                 activity = new ListingActivity();
                 break;
             case "4":
-                activity = new StretchingActivity(); // Instantiate StretchingActivity
+                activity = new StretchingActivity(); 
                 break;
             case "5":
-                return; // Exit program
+                return; 
             default:
                 Console.WriteLine("Invalid choice, please try again.");
                 break;
