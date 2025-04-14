@@ -11,7 +11,7 @@ public abstract class Shape
         _color = color;
     }
 
-    // Getter and Setter for color
+    
     public string GetColor()
     {
         return _color;
