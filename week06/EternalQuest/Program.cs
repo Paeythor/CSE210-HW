@@ -67,14 +67,27 @@ class Program
         }
     }
 
+    static int PromptForInt(string message)
+    {
+        while (true)
+        {
+            Console.Write(message);
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out int result))
+            {
+                return result;
+            }
+            Console.WriteLine("Invalid input. Please enter a valid number.");
+        }
+    }
+
     static void AddSimpleGoal(GoalManager manager)
     {
         Console.Write("Enter goal short name: ");
         string shortName = Console.ReadLine();
         Console.Write("Enter goal description: ");
         string description = Console.ReadLine();
-        Console.Write("Enter points for the goal: ");
-        int points = int.Parse(Console.ReadLine());
+        int points = PromptForInt("Enter points for the goal: ");
 
         SimpleGoal goal = new SimpleGoal(shortName, description, points);
         manager.AddGoal(goal);
@@ -87,8 +100,7 @@ class Program
         string shortName = Console.ReadLine();
         Console.Write("Enter goal description: ");
         string description = Console.ReadLine();
-        Console.Write("Enter points for the goal: ");
-        int points = int.Parse(Console.ReadLine());
+        int points = PromptForInt("Enter points for the goal: ");
 
         EternalGoal goal = new EternalGoal(shortName, description, points);
         manager.AddGoal(goal);
@@ -101,23 +113,19 @@ class Program
         string shortName = Console.ReadLine();
         Console.Write("Enter goal description: ");
         string description = Console.ReadLine();
-        Console.Write("Enter points for the goal: ");
-        int points = int.Parse(Console.ReadLine());
-        Console.Write("Enter target for the goal: ");
-        int target = int.Parse(Console.ReadLine());
-        Console.Write("Enter amount completed: ");
-        int amountCompleted = int.Parse(Console.ReadLine());
-        Console.Write("Enter bonus points: ");
-        int bonus = int.Parse(Console.ReadLine());
+        int points = PromptForInt("Enter points for the goal: ");
+        int target = PromptForInt("Enter target for the goal: ");
+        int amountCompleted = PromptForInt("Enter amount completed: ");
+        int bonus = PromptForInt("Enter bonus points: ");
 
         ChecklistGoal goal = new ChecklistGoal(shortName, description, points, target, amountCompleted, bonus);
         manager.AddGoal(goal);
         Console.WriteLine("Checklist Goal added successfully.");
     }
+
     static void RecordEvent(GoalManager manager)
     {
-        Console.Write("Enter the index of the goal to record an event: ");
-        int index = int.Parse(Console.ReadLine());
+        int index = PromptForInt("Enter the index of the goal to record an event: ");
         manager.RecordEvent(index);
         Console.WriteLine("Event recorded successfully.");
     }
