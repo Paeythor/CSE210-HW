@@ -39,11 +39,19 @@ public class GoalManager
             if (goal is ChecklistGoal checklistGoal)
             {
                 _score += checklistGoal.GetBonus();
+                Console.WriteLine($"Congratulations! You completed the goal '{goal.GetDetailsString()}' and earned {checklistGoal.GetBonus()} bonus points.");
             }
             else
             {
                 _score += goal.GetPoints();
+                Console.WriteLine($"Congratulations! You completed the goal '{goal.GetDetailsString()}' and earned {goal.GetPoints()} points.");
             }
+
+            Console.WriteLine($"Your total score is now: {_score} points.");
+        }
+        else
+        {
+            Console.WriteLine($"You're making progress on '{goal.GetDetailsString()}'! Keep going!");
         }
     }
 
@@ -66,12 +74,11 @@ public class GoalManager
         Console.WriteLine($"Your total score is: {_score}");
     }
 
-    // ✅ Updated SaveGoals to include score
     public void SaveGoals(string filename)
     {
         using (StreamWriter writer = new StreamWriter(filename))
         {
-            writer.WriteLine(_score); // First line = total score
+            writer.WriteLine(_score);
             foreach (var goal in _goals)
             {
                 writer.WriteLine(goal.GetStringRepresentation());
@@ -81,7 +88,6 @@ public class GoalManager
         Console.WriteLine("Goals saved successfully.");
     }
 
-    // ✅ Updated LoadGoals to read score and use a factory method
     public void LoadGoals(string filename)
     {
         if (!File.Exists(filename))
@@ -97,9 +103,10 @@ public class GoalManager
             Console.WriteLine("The file is empty.");
             return;
         }
+
         try
         {
-            _score = int.Parse(lines[0]); // First line is score
+            _score = int.Parse(lines[0]);
         }
         catch
         {
@@ -124,10 +131,7 @@ public class GoalManager
         }
 
         Console.WriteLine("Goals loaded successfully.");
-    }
-
-    // ✅ Factory Method for deserializing goals
-    private Goal CreateGoalFromString(string type, string[] details)
+    }    private Goal CreateGoalFromString(string type, string[] details)
     {
         switch (type)
         {
@@ -211,5 +215,80 @@ public class GoalManager
         Console.WriteLine("EternalGoal:Run Daily,Go for a daily jog,10");
         Console.WriteLine("ChecklistGoal:Workout,Complete 10 workouts,20,10,3,100");
         Console.WriteLine("--------------------------------\n");
+    }
+
+    public void MarkGoalAsComplete(int index)
+    {
+        if (index < 0 || index >= _goals.Count)
+        {
+            Console.WriteLine("Invalid index. Please choose a valid goal.");
+            return;
+        }
+
+        var goal = _goals[index];
+
+        if (goal is SimpleGoal simpleGoal)
+        {
+            simpleGoal.MarkAsComplete();
+        }
+        else
+        {
+            Console.WriteLine("This goal cannot be marked as complete directly.");
+        }
+    }
+
+    public void ShowMenu()
+    {
+        Console.WriteLine("Goal Manager Menu:");
+        Console.WriteLine("1. Add Goal");
+        Console.WriteLine("2. List Goals");
+        Console.WriteLine("3. Record Event");
+        Console.WriteLine("4. Mark Goal as Complete");
+        Console.WriteLine("5. Display Total Score");
+        Console.WriteLine("6. Save Goals");
+        Console.WriteLine("7. Load Goals");
+        Console.WriteLine("8. Exit");
+
+        Console.Write("Choose an option: ");
+        string choice = Console.ReadLine();
+
+        switch (choice)
+        {
+            case "1":
+                PromptAndAddGoal();
+                break;
+            case "2":
+                ListGoals();
+                break;
+            case "3":
+                Console.Write("Enter the index of the goal to record an event: ");
+                int recordIndex = int.Parse(Console.ReadLine());
+                RecordEvent(recordIndex);
+                break;
+            case "4":
+                Console.Write("Enter the index of the goal to mark as complete: ");
+                int completeIndex = int.Parse(Console.ReadLine());
+                MarkGoalAsComplete(completeIndex);
+                break;
+            case "5":
+                DisplayScore();
+                break;
+            case "6":
+                Console.Write("Enter filename to save goals: ");
+                string saveFile = Console.ReadLine();
+                SaveGoals(saveFile);
+                break;
+            case "7":
+                Console.Write("Enter filename to load goals: ");
+                string loadFile = Console.ReadLine();
+                LoadGoals(loadFile);
+                break;
+            case "8":
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("Invalid option.");
+                break;
+        }
     }
 }

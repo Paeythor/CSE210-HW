@@ -2,49 +2,43 @@ using System;
 
 public class ChecklistGoal : Goal
 {
-    public int Target { get; set; }
-    public int AmountCompleted { get; set; }
-    public int Bonus { get; set; }
+    private int _target;
+    private int _completed;
+    private int _bonus;
 
-    public ChecklistGoal(string name, string description, int points, int target, int amountCompleted, int bonus)
-        : base(name, description, points)
+    public ChecklistGoal(string shortName, string description, int points, int target, int completed, int bonus)
+        : base(shortName, description, points)
     {
-        Target = target;
-        AmountCompleted = amountCompleted;
-        Bonus = bonus;
+        _target = target;
+        _completed = completed;
+        _bonus = bonus;
     }
 
     public override void RecordEvent()
     {
-        if (IsComplete())
+        if (_completed < _target)
         {
-            Console.WriteLine($"Goal '{_shortName}' is already complete. No further events can be recorded.");
-        }
-        else
-        {
-            AmountCompleted++;
-            Console.WriteLine($"Event recorded for goal '{_shortName}'. Progress: {AmountCompleted}/{Target}");
+            _completed++;
         }
     }
 
     public override bool IsComplete()
     {
-        return AmountCompleted >= Target;
+        return _completed >= _target;
     }
 
-    public override string GetStringRepresentation()
+    public override int GetPoints()
     {
-        return $"ChecklistGoal:{_shortName},{_description},{_points},{Target},{AmountCompleted},{Bonus}";
-    }
-
-    public override string GetDetailsString()
-    {
-        string completionStatus = IsComplete() ? "[Complete]" : "[In Progress]";
-        return $"{_shortName} ({_description}) - Completed {AmountCompleted}/{Target} times. {completionStatus} Bonus: {Bonus} points.";
+        return IsComplete() ? _points + _bonus : _points;
     }
 
     public int GetBonus()
     {
-        return Bonus;
+        return _bonus;
+    }
+
+    public override string GetStringRepresentation()
+    {
+        return $"ChecklistGoal:{_shortName},{_description},{_points},{_target},{_completed},{_bonus}";
     }
 }
