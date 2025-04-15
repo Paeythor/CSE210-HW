@@ -8,7 +8,9 @@ public class EternalGoal : Goal
     public override void RecordEvent()
     {
         Console.WriteLine($"Goal '{_shortName}' recorded. {_points} points earned.");
+        // Eternal Goals don't change completion status, as they are always active.
     }
+    
 
     public override bool IsComplete()
     {

@@ -1,3 +1,4 @@
+
 SimpleGoal:Run a Marathon,Complete a marathon race,1000,False
 EternalGoal:Read Scriptures,Read scriptures daily,50
 ChecklistGoal:Attend Temple,Attend the temple,100,10,0,500
