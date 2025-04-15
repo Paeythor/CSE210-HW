@@ -3,24 +3,26 @@ using System;
 public class Rectangle : Shape
 {
     
+    private double _length;
     private double _width;
-    private double _height;
 
     
-    public Rectangle(string color, double width, double height) : base(color)
+    public Rectangle(string color, double width, double length) : base(color)
     {
+        _length = length;
         _width = width;
-        _height = height;
+        
     }
-   
-    public override double GetArea()
-    {
-        return _width * _height;
-    }
-
-    
     public override double GetPerimeter()
     {
-        return 2 * (_width + _height);
+        return 2 * (_width + _length);
     }
+    public override double GetArea()
+    {
+        return _length * _width;
+    }
+
+    
+    
+   
 }

@@ -21,6 +21,17 @@ class Program
             Console.WriteLine($"Shape Color: {shape.GetColor()}");
             Console.WriteLine($"Shape Area: {shape.GetArea()}\n");
             Console.WriteLine($"Shape Perimeter: {shape.GetPerimeter()}\n"); 
+
+        }
+        foreach (Shape s in shapes)
+        {
+            
+            string color = s.GetColor();
+
+            
+            double area = s.GetArea();
+
+            Console.WriteLine($"The {color} shape has an area of {area}.");
         }
     }
 }

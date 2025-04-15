@@ -1,7 +1,3 @@
-
-
-using System;
-
 public class Square : Shape
 {
     
@@ -18,7 +14,7 @@ public class Square : Shape
     {
         return _side * _side;
     }
-public override double GetPerimeter()
+    public override double GetPerimeter()
     {
         return 4 * _side;
     }
