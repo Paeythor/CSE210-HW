@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 class Program
 {
@@ -10,48 +12,37 @@ class Program
         while (running)
         {
             Console.Clear();
-            Console.WriteLine("Goal Management System");
-            Console.WriteLine("-----------------------");
-            Console.WriteLine("1. Add Simple Goal");
-            Console.WriteLine("2. Add Eternal Goal");
-            Console.WriteLine("3. Add Checklist Goal");
-            Console.WriteLine("4. List Goals");
+            Console.WriteLine($"Current Score: {manager.GetTotalScore()} points");
+            Console.WriteLine();
+            Console.WriteLine("Menu Options");
+            Console.WriteLine("1. Create New Goal");
+            Console.WriteLine("2. List Goals");
+            Console.WriteLine("3. Save Goals");
+            Console.WriteLine("4. Load Goals");
             Console.WriteLine("5. Record Event");
-            Console.WriteLine("6. Display Score");
-            Console.WriteLine("7. Save Goals");
-            Console.WriteLine("8. Load Goals");
-            Console.WriteLine("9. Exit");
-            Console.Write("Choose an option (1-9): ");
-            
+            Console.WriteLine("6. Quit");
+            Console.Write("Select a choice from the menu: ");
+
             string choice = Console.ReadLine();
 
             switch (choice)
             {
                 case "1":
-                    AddSimpleGoal(manager);
+                    CreateNewGoal(manager);
                     break;
                 case "2":
-                    AddEternalGoal(manager);
+                    manager.ListGoals();
                     break;
                 case "3":
-                    AddChecklistGoal(manager);
+                    SaveGoals(manager);
                     break;
                 case "4":
-                    manager.ListGoals();
+                    LoadGoals(manager);
                     break;
                 case "5":
                     RecordEvent(manager);
                     break;
                 case "6":
-                    manager.DisplayScore();
-                    break;
-                case "7":
-                    SaveGoals(manager);
-                    break;
-                case "8":
-                    LoadGoals(manager);
-                    break;
-                case "9":
                     running = false;
                     break;
                 default:
@@ -64,6 +55,34 @@ class Program
                 Console.WriteLine("\nPress Enter to continue...");
                 Console.ReadLine();
             }
+        }
+    }
+
+    static void CreateNewGoal(GoalManager manager)
+    {
+        Console.Clear();
+        Console.WriteLine("The Types of Goals are:");
+        Console.WriteLine("1. Simple Goal");
+        Console.WriteLine("2. Eternal Goal");
+        Console.WriteLine("3. Checklist Goal");
+        Console.Write("Which type of goal would you like to create? ");
+
+        string goalType = Console.ReadLine();
+
+        switch (goalType)
+        {
+            case "1":
+                AddSimpleGoal(manager);
+                break;
+            case "2":
+                AddEternalGoal(manager);
+                break;
+            case "3":
+                AddChecklistGoal(manager);
+                break;
+            default:
+                Console.WriteLine("Invalid option. Returning to main menu.");
+                break;
         }
     }
 

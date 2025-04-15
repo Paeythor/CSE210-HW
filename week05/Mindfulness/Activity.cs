@@ -23,10 +23,10 @@ public abstract class Activity
     {
         Console.WriteLine($"Great job! You've completed the {activityName} activity.");
         Console.WriteLine($"You spent {Duration} seconds on this activity.");
-        PauseWithAnimation(3); // Pause for 3 seconds before finishing
+        PauseWithAnimation(3); 
     }
 
-    // Pause method with an animation (spinner or countdown) during the pause
+    
     protected void PauseWithAnimation(int seconds)
     {
         DateTime endTime = DateTime.Now.AddSeconds(seconds);
